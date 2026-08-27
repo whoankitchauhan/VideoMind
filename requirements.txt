@@ -1,26 +1,30 @@
 # ------------------------------------------------------------------
-# AI Meeting Assistant — requirements.txt
+# VideoMind — requirements.txt
 # ------------------------------------------------------------------
 
 # --- UI ---
 streamlit>=1.36.0
 
 # --- Audio acquisition ---
-yt-dlp>=2024.8.6          # download audio from YouTube URLs
-pytube>=15.0.0            # optional fallback for YouTube metadata/download
-ffmpeg-python>=0.2.0      # wraps ffmpeg for audio extraction/conversion
+yt-dlp>=2024.8.6
+pytube>=15.0.0
+ffmpeg-python>=0.2.0
+
+# NOTE:
+# The actual FFmpeg executable must be installed separately on Windows.
+# Example:
+# winget install Gyan.FFmpeg.Shared
 
 # --- Transcription (local Whisper) ---
 openai-whisper>=20231117
-torch>=2.2.0               # Whisper backend; use CUDA build manually if you have a GPU
+torch>=2.2.0
 torchaudio>=2.2.0
 
 # --- Hindi -> English translation ---
-# googletrans==4.0.0-rc1      # lightweight option; swap for deep-translator if rate-limited
-deep-translator>=1.11.4     # alternative/backup translation library
-langdetect>=1.0.9           # detect Hindi vs English before translating
+deep-translator>=1.11.4
+langdetect>=1.0.9
 
-# --- LangChain + Mistral (LCEL pipeline) ---
+# --- LangChain + Mistral ---
 langchain>=0.2.11
 langchain-core>=0.2.27
 langchain-community>=0.2.10
@@ -33,12 +37,12 @@ langchain-chroma>=0.1.2
 sentence-transformers>=3.0.1
 huggingface-hub>=0.24.5
 
-# --- Export (PDF / TXT) ---
-fpdf2>=2.7.9                # generate PDF exports
-reportlab>=4.2.2            # alternative/richer PDF generation option
+# --- Export ---
+fpdf2>=2.7.9
+reportlab>=4.2.2
 
 # --- Utilities ---
-python-dotenv>=1.0.1        # load API keys (MISTRAL_API_KEY etc.) from .env
+python-dotenv>=1.0.1
 pydantic>=2.8.2
 tqdm>=4.66.5
 numpy>=1.26.4
