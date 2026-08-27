@@ -16,7 +16,7 @@ torch>=2.2.0               # Whisper backend; use CUDA build manually if you hav
 torchaudio>=2.2.0
 
 # --- Hindi -> English translation ---
-googletrans==4.0.0-rc1      # lightweight option; swap for deep-translator if rate-limited
+# googletrans==4.0.0-rc1      # lightweight option; swap for deep-translator if rate-limited
 deep-translator>=1.11.4     # alternative/backup translation library
 langdetect>=1.0.9           # detect Hindi vs English before translating
 
