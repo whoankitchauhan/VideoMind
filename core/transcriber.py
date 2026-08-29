@@ -11,3 +11,20 @@ def load_whisper_model():
         _model = whisper.load_model(WHISPER_MODEL)
         print("Whisper model loaded.")
     return _model
+
+
+def transcribe_chunk(chunk_path : str , translate : bool = False) -> str:
+    model = load_whisper_model()
+    task = "translate" if translate else "transcribe"
+    result = model.transcribe(chunk_path, task=task)
+    print(f"Transcribing chunk: {chunk_path} (Task: {task})")
+    return result["text"]
+
+
+def transcribe_audio_chunks(chunks: list, translate: bool = False) -> str:
+    full_transcription = ""
+    for i ,chunk in chunks:
+        print(f"[Transcribing chunk {i+1}/{len(chunks)}] {chunk}")
+        transcription = transcribe_chunk(chunk, translate)
+        full_transcription += transcription + " "
+    return full_transcription.strip()
