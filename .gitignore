@@ -1,1 +1,6 @@
+# Block the file with real secrets
 .env
+.env.local
+
+# Allow the template file
+!.env.example
