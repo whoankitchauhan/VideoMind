@@ -27,4 +27,5 @@ def transcribe_audio_chunks(chunks: list, translate: bool = False) -> str:
         print(f"[Transcribing chunk {i+1}/{len(chunks)}] {chunk}")
         transcription = transcribe_chunk(chunk, translate)
         full_transcription += transcription + " "
+        print(f"✓ Chunk {i+1} transcribed.")
     return full_transcription.strip()
