@@ -23,7 +23,7 @@ def transcribe_chunk(chunk_path : str , translate : bool = False) -> str:
 
 def transcribe_audio_chunks(chunks: list, translate: bool = False) -> str:
     full_transcription = ""
-    for i ,chunk in chunks:
+    for i ,chunk in enumerate(chunks):
         print(f"[Transcribing chunk {i+1}/{len(chunks)}] {chunk}")
         transcription = transcribe_chunk(chunk, translate)
         full_transcription += transcription + " "
