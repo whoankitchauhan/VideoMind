@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from utlis.audio_processor import process_input
 from core.transcriber import transcribe_audio_chunks
 from core.extractor import (
