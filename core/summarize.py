@@ -5,6 +5,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 import os
 
+from core.llm_utils import invoke_llm
+
 
 # ------------------------------------------------------------
 # Get Mistral LLM
@@ -79,9 +81,12 @@ def summarize(transcript: str) -> str:
     for i, chunk in enumerate(chunks):
         print(f"Summarizing chunk {i + 1}/{len(chunks)}...")
 
-        summary = map_chain.invoke({
-            "text": chunk
-        })
+        summary = invoke_llm(
+            map_chain,
+            {"text": chunk},
+            f"summarizing chunk {i + 1}",
+            fallback="Summary unavailable because the Mistral API rate limit was reached."
+        )
 
         chunk_summaries.append(summary)
 
@@ -117,9 +122,12 @@ def summarize(transcript: str) -> str:
 
     combined_chain = combined_prompt | llm | StrOutputParser()
 
-    final_summary = combined_chain.invoke({
-        "text": combined
-    })
+    final_summary = invoke_llm(
+        combined_chain,
+        {"text": combined},
+        "combining summary chunks",
+        fallback=combined
+    )
 
     print("✓ Meeting summary generated.")
 
@@ -157,9 +165,12 @@ def generate_title(transcript: str) -> str:
 
     title_chain = title_prompt | llm | StrOutputParser()
 
-    title = title_chain.invoke({
-        "text": transcript[:3000]
-    })
+    title = invoke_llm(
+        title_chain,
+        {"text": transcript[:3000]},
+        "generating the meeting title",
+        fallback="Untitled Meeting"
+    )
 
     print(f"✓ Meeting title generated: {title.strip()}")
 
