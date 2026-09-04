@@ -10,6 +10,7 @@ from core.vector_store import (
     load_vector_store,
     get_retriever
 )
+from core.llm_utils import invoke_llm
 
 
 # --------------------------------
@@ -176,7 +177,12 @@ def ask_question(rag_chain, question: str) -> str:
     print(f"Question: {question}")
     print("-" * 50)
 
-    answer = rag_chain.invoke(question)
+    answer = invoke_llm(
+        rag_chain,
+        question,
+        "answering the question",
+        fallback="I cannot answer right now because the Mistral API rate limit was reached. Please try again in a minute."
+    )
 
     print(f"\nAnswer:\n{answer}")
 
