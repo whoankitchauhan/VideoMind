@@ -2,12 +2,7 @@ from dotenv import load_dotenv
 
 from utils.audio_processor import process_input
 from core.transcriber import transcribe_audio_chunks
-from core.summarize import summarize, generate_title
-from core.extractor import (
-    extract_action_items,
-    extract_key_decisions,
-    extract_questions
-)
+from core.analyzer import analyze_transcript
 
 
 from core.rag_Engine import build_rag_chain, ask_question
@@ -60,50 +55,30 @@ def run_pipeline(source: str, language: str = "english") -> dict:
     )
 
     # --------------------------------
-    # STEP 3: Generate Title
+    # STEP 3: Analyze Transcript
     # --------------------------------
 
-    print("\n[3/7] Generating title...")
+    print("\n[3/5] Analyzing transcript...")
 
-    title = generate_title(transcript)
-
-    # --------------------------------
-    # STEP 4: Generate Summary
-    # --------------------------------
-
-    print("\n[4/7] Generating summary...")
-
-    summary = summarize(transcript)
+    analysis = analyze_transcript(transcript)
 
     # --------------------------------
-    # STEP 5: Extract Information
+    # STEP 4: Build RAG
     # --------------------------------
 
-    print("\n[5/7] Extracting meeting information...")
-
-    action_items = extract_action_items(transcript)
-
-    decisions = extract_key_decisions(transcript)
-
-    questions = extract_questions(transcript)
-
-    # --------------------------------
-    # STEP 6: Build RAG
-    # --------------------------------
-
-    print("\n[6/7] Building RAG system...")
+    print("\n[4/5] Building RAG system...")
 
     rag_chain = build_rag_chain(transcript)
 
-    print("\n[7/7] Pipeline completed successfully!")
+    print("\n[5/5] Pipeline completed successfully!")
 
     return {
-        "title": title,
+        "title": analysis["title"],
         "transcript": transcript,
-        "summary": summary,
-        "action_items": action_items,
-        "key_decisions": decisions,
-        "open_questions": questions,
+        "summary": analysis["summary"],
+        "action_items": analysis["action_items"],
+        "key_decisions": analysis["key_decisions"],
+        "open_questions": analysis["open_questions"],
         "rag_chain": rag_chain,
     }
 
