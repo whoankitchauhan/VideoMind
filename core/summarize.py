@@ -1,23 +1,8 @@
-from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-import os
-
-from core.llm_utils import invoke_llm
-
-
-# ------------------------------------------------------------
-# Get Mistral LLM
-# ------------------------------------------------------------
-
-def get_llm():
-    return ChatMistralAI(
-        model="mistral-small-latest",
-        mistral_api_key=os.getenv("MISTRAL_API_KEY"),
-        temperature=0.3
-    )
+from core.llm_utils import get_llm, invoke_llm
 
 
 # ------------------------------------------------------------
