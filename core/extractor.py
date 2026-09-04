@@ -4,6 +4,8 @@ from langchain_core.output_parsers import StrOutputParser
 
 import os
 
+from core.llm_utils import invoke_llm
+
 
 # ------------------------------------------------------------
 # Get Mistral LLM
@@ -63,9 +65,12 @@ def extract_action_items(transcript: str) -> str:
         """
     )
 
-    result = chain.invoke({
-        "text": transcript
-    })
+    result = invoke_llm(
+        chain,
+        {"text": transcript},
+        "extracting action items",
+        fallback="Action items unavailable because the Mistral API rate limit was reached."
+    )
 
     print("✓ Action items extracted.")
 
@@ -100,9 +105,12 @@ def extract_key_decisions(transcript: str) -> str:
         """
     )
 
-    result = chain.invoke({
-        "text": transcript
-    })
+    result = invoke_llm(
+        chain,
+        {"text": transcript},
+        "extracting key decisions",
+        fallback="Key decisions unavailable because the Mistral API rate limit was reached."
+    )
 
     print("✓ Key decisions extracted.")
 
@@ -138,9 +146,12 @@ def extract_questions(transcript: str) -> str:
         """
     )
 
-    result = chain.invoke({
-        "text": transcript
-    })
+    result = invoke_llm(
+        chain,
+        {"text": transcript},
+        "extracting open questions",
+        fallback="Open questions unavailable because the Mistral API rate limit was reached."
+    )
 
     print("✓ Open questions extracted.")
 
