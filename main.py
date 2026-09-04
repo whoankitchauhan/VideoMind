@@ -1,13 +1,15 @@
 from dotenv import load_dotenv
 
 from utils.audio_processor import process_input
-from core.transcriber import transcribe_all
+from core.transcriber import transcribe_audio_chunks
 from core.summarize import summarize, generate_title
 from core.extractor import (
     extract_action_items,
     extract_key_decisions,
     extract_questions
 )
+
+
 from core.rag_Engine import build_rag_chain, ask_question
 
 
@@ -35,7 +37,7 @@ def run_pipeline(source: str, language: str = "english") -> dict:
 
     print("\n[2/7] Transcribing audio...")
 
-    transcript = transcribe_all(chunks, language)
+    transcript = transcribe_audio_chunks(chunks, language)
 
     print(
         f"\nRaw transcription "
