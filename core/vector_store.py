@@ -1,5 +1,7 @@
 # Vector Store module for storing and retrieving vector embeddings.
 
+import hashlib
+
 from langchain_chroma import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -16,6 +18,11 @@ COLLECTION_NAME = "meeting_transcripts"
 # Hugging Face embedding model.
 # It converts text into numerical vectors.
 EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
+
+
+def get_collection_name(transcript: str) -> str:
+    transcript_hash = hashlib.sha256(transcript.encode("utf-8")).hexdigest()[:16]
+    return f"{COLLECTION_NAME}_{transcript_hash}"
 
 
 def get_embeddings_model():
@@ -90,11 +97,17 @@ def get_vector_store(transcript: str) -> Chroma:
 
     print("\n[3/3] Creating ChromaDB vector store...")
 
+    collection_name = get_collection_name(transcript)
     vector_store = Chroma(
-        collection_name=COLLECTION_NAME,
+        collection_name=collection_name,
         persist_directory=CHROMA_PERSIST_DIR,
         embedding_function=get_embeddings_model()
     )
+
+    existing = vector_store.get(limit=1)
+    if existing.get("ids"):
+        print(f"Reusing existing vector store collection: {collection_name}")
+        return vector_store
 
     vector_store.add_documents(documents)
 
