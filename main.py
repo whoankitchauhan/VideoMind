@@ -17,6 +17,18 @@ from core.rag_Engine import build_rag_chain, ask_question
 load_dotenv()
 
 
+def should_translate(language: str) -> bool:
+    normalized_language = language.strip().lower()
+    if normalized_language in ("english", "en"):
+        return False
+    if normalized_language in ("hinglish", "hindi", "hi"):
+        return True
+
+    raise ValueError(
+        "Unsupported language. Please choose 'english' or 'hinglish'."
+    )
+
+
 def run_pipeline(source: str, language: str = "english") -> dict:
 
     print("\n" + "=" * 60)
@@ -37,7 +49,10 @@ def run_pipeline(source: str, language: str = "english") -> dict:
 
     print("\n[2/7] Transcribing audio...")
 
-    transcript = transcribe_audio_chunks(chunks, language)
+    transcript = transcribe_audio_chunks(
+        chunks,
+        translate=should_translate(language)
+    )
 
     print(
         f"\nRaw transcription "
