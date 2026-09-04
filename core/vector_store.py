@@ -71,7 +71,7 @@ def get_vector_store(transcript: str) -> Chroma:
 
     print(f"✓ Transcript split into {len(chunks)} chunks.")
 
-    # --------------------------------
+    # --------------------------------   
     # Step 2: Create Documents
     # --------------------------------
 
